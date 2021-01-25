@@ -1,33 +1,36 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
-  title = 'fizz-buzz-app';
-  answer;
+  title = 'FizzBuzz App';
+  answer:any;
   curentNumber: number;
   oldnumbers = [];
   isAutoModeStopped:boolean = false;
   showLoader:boolean = false;
-  interval;
+  interval:any;
   timeLeft: number = 60;
-  constructor(private http: HttpClient) {
 
+  constructor(private http: HttpClient) {
   }
+
   ngOnInit() {
     this.getNumber()
-
   }
+
   getNumber() {
     this.showLoader = true;
-    this.http.get<number>('https://numup.herokuapp.com/getNumber')
+    this.http.get('https://numup.herokuapp.com/getNumber')
       .subscribe(
-        (data) => {
+        (data:any) => {
           this.curentNumber = data.data
-          this.oldnumbers = Array(this.curentNumber - 1).fill(0).map((x, i) => i + 1);
+          this.oldnumbers = Array(this.curentNumber - 1).fill(0).map((x, i) => i + 1).sort((a, b) => b - a);
           this.getFizzBuss()
           this.showLoader = false;
         }, err => {
@@ -47,7 +50,7 @@ export class AppComponent {
 
   getFizzBuss(){
     let i = this.curentNumber;
-      this.answer =   i%15===0 ? 'Fizzbuzz' :  i%5===0 ? 'Buzz' :   i%3===0 ? 'Fizz' : i;
+      this.answer = i%15===0 ? 'Fizzbuzz' :  i%5===0 ? 'Buzz' :   i%3===0 ? 'Fizz' : i;
   }
 
   resetNumber() {
@@ -57,7 +60,7 @@ export class AppComponent {
           this.getNumber()
           this.pauseTimer()
         }
-      );
+      )
   }
 
   startTimer() {
@@ -71,7 +74,5 @@ export class AppComponent {
     clearInterval(this.interval);
     this.isAutoModeStopped = false
   }
-
-
 
 }
