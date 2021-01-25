@@ -16,7 +16,7 @@ export class AppComponent {
   showLoader:boolean = false;
   interval:any;
   timeLeft: number = 60;
-
+  
   constructor(private http: HttpClient) {
   }
 
@@ -30,11 +30,12 @@ export class AppComponent {
       .subscribe(
         (data:any) => {
           this.curentNumber = data.data
-          this.oldnumbers = Array(this.curentNumber - 1).fill(0).map((x, i) => i + 1).sort((a, b) => b - a);
+          // this.oldnumbers = Array(this.curentNumber).fill(0).map((x, i) => i + 1).sort((a, b) => b - a);
+          this.oldnumbers.push(this.curentNumber);
+          this.oldnumbers.sort((a, b) => b - a);
           this.getFizzBuss()
           this.showLoader = false;
         }, err => {
-          console.log(err)
           if(err.status==500){
             const r = confirm(`There is a ${err.statusText} \n press 'OK' to continue or 'Cancel' to pause`);
             if (r == true) {
@@ -57,6 +58,7 @@ export class AppComponent {
     this.http.post('https://numup.herokuapp.com/reset', '')
       .subscribe(
         (data) => {
+          this.oldnumbers = []
           this.getNumber()
           this.pauseTimer()
         }

@@ -32,7 +32,7 @@
         </svg>
       <span>Reset</span>
     </button>
-    <button type="button" class="card card-small" (click)="getNumber()" [disabled]="showLoader" [class.disabled]="showLoader">
+    <button type="button" class="card card-small" (click)="getNumber()" [disabled]="showLoader || isAutoModeStopped" [class.disabled]="showLoader || isAutoModeStopped">
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" /></svg>
       <span>New/Next Number</span>
@@ -53,10 +53,10 @@
     </button>
   </div>
 
-  <h4 class="blueheading mt-5" *ngIf="curentNumber > 1">Previous Numbers</h4>
+  <h4 class="blueheading mt-5" *ngIf="oldnumbers.length>1">Previous Numbers</h4>
   <div class="card-container">
-    <ng-container *ngFor='let in of oldnumbers ;let i = index'>
-      <span class="circle-link" [ngClass]="{'fizzBuzzColor':in%15===0, 'fizzColor':in%3==0, 'buzzColor': in%5==0 }">{{in}}</span>
+    <ng-container *ngFor='let in of oldnumbers ;let i = index; first as isFirst'>
+      <span class="circle-link" *ngIf="!isFirst" [ngClass]="{'fizzBuzzColor':in%15===0, 'fizzColor':in%3==0, 'buzzColor': in%5==0 }">{{in}}</span>
     </ng-container>
   </div>
 
